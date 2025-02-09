@@ -1,0 +1,13 @@
+{
+  "name": "drizzle",
+  "version": "1.0.0",
+  "description": "drizzle tuto",
+  "main": "main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.ts",
+    "dev": "nodemon src/main.ts"
+  },
+  "author": "Abhishek pp",
+  "license": "ISC"
+}
