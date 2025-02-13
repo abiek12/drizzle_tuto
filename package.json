@@ -6,14 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/main.ts",
-    "dev": "nodemon src/main.ts"
+    "dev": "nodemon src/main.ts",
+    "db:generate": "drizzle-kit generate"
   },
   "author": "Abhishek pp",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
-    "pg": "^8.13.1"
+    "pg": "^8.13.1",
+    "postgres": "^3.4.5"
   },
   "devDependencies": {
     "@types/pg": "^8.11.11",
