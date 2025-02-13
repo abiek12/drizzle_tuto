@@ -2,7 +2,7 @@ import { pgTable, uuid, serial, varchar, integer, date, boolean } from "drizzle-
 
 export const usersTable = pgTable("users", {
     id: serial().primaryKey(),
-    userId: uuid("userId").primaryKey().unique().defaultRandom(),
+    userId: uuid("userId").unique().defaultRandom(),
     userName: varchar("userName", {length: 150}).notNull(),
     age: integer("age").notNull().default(0),
     email: varchar("email", {length: 255}).notNull().unique(),
