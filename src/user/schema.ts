@@ -1,4 +1,4 @@
-import { pgTable, uuid, serial, varchar, integer, date, boolean } from "drizzle-orm/pg-core";
+import { pgTable, uuid, serial, varchar, integer, date, boolean, index, unique } from "drizzle-orm/pg-core";
 import { pgEnum } from "drizzle-orm/pg-core";
 
 export const UserRoles = pgEnum("userRoles", ["ADMIN", "USER"]);
@@ -13,4 +13,9 @@ export const usersTable = pgTable("users", {
     createdAt: date("createdAt").notNull().defaultNow(),
     updatedAt: date("updatedAt").notNull().defaultNow(),
     isDeleted: boolean("isDeleted").notNull().default(false)
+}, table => {
+    return {
+        emailIndex: index("emailIndex").on(table.email),
+        uniqueUserNameAndEmail: unique("uniqueUserNameAndEmail").on(table.userName, table.email)
+    }
 })
