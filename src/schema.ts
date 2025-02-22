@@ -1,5 +1,6 @@
 import { pgTable, uuid, serial, varchar, integer, date, boolean, index, unique, text, timestamp, real, primaryKey } from "drizzle-orm/pg-core";
 import { pgEnum } from "drizzle-orm/pg-core";
+import { generateUniqueString } from "./utils/common";
 
 export const UserRoles = pgEnum("userRoles", ["ADMIN", "USER"]);
 export const Themes = pgEnum("themes", ["LIGHT", "DARK", "SYSTEM_DEFAULT" ])
@@ -34,6 +35,7 @@ export const postTable = pgTable("post", {
     id: serial().primaryKey(),
     title: varchar("title", {length:255}).notNull(),
     content: text("content").notNull(),
+    slug: varchar("slug", {length: 255}).notNull().$default(()=>generateUniqueString(16)),
     averageRating: real("averageRating").notNull().default(0),
     createdAt: timestamp("createdAt").notNull().defaultNow(),
     updatedAt: timestamp("updatedAt").notNull().defaultNow(),
