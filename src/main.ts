@@ -1,5 +1,5 @@
 import { db } from "./drizzle/db";
-import { usersTable } from "./user/schema";
+import { usersTable } from "./schema";
 
 const main = async () => {
     console.log('Server started');

@@ -1,4 +1,4 @@
-import { pgTable, uuid, serial, varchar, integer, date, boolean, index, unique, text, timestamp, real } from "drizzle-orm/pg-core";
+import { pgTable, uuid, serial, varchar, integer, date, boolean, index, unique, text, timestamp, real, primaryKey } from "drizzle-orm/pg-core";
 import { pgEnum } from "drizzle-orm/pg-core";
 
 export const UserRoles = pgEnum("userRoles", ["ADMIN", "USER"]);
@@ -39,4 +39,23 @@ export const postTable = pgTable("post", {
     updatedAt: timestamp("updatedAt").notNull().defaultNow(),
     isDeleted: boolean("isDeleted").notNull().default(false),
     authorId: integer("authorId").notNull().references(()=> usersTable.id)
+})
+
+// Category table
+export const categoryTable = pgTable("category", {
+    id: serial().primaryKey(),
+    name: varchar("name", {length: 255}).notNull(),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+    updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+    isDeleted: boolean("isDeleted").notNull().default(false),
+})
+
+// post-category table
+export const postCategoryTable = pgTable("postCategory", {
+    postId: integer("postId").references(()=> postTable.id).notNull(),
+    categoryId: integer("categoryId").references(()=> categoryTable.id).notNull(),
+}, table => {
+    return {
+        postCategoryPk: primaryKey({ columns:[table.postId, table.categoryId] })
+    }
 })
