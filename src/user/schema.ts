@@ -1,4 +1,4 @@
-import { pgTable, uuid, serial, varchar, integer, date, boolean, index, unique } from "drizzle-orm/pg-core";
+import { pgTable, uuid, serial, varchar, integer, date, boolean, index, unique, text, timestamp, real } from "drizzle-orm/pg-core";
 import { pgEnum } from "drizzle-orm/pg-core";
 
 export const UserRoles = pgEnum("userRoles", ["ADMIN", "USER"]);
@@ -26,5 +26,17 @@ export const userSettingsTable = pgTable("user_settings", {
     id: serial().primaryKey(),
     emailUpdates: boolean("emailUpdates").notNull().default(true),
     theme: Themes("themes").notNull().default("LIGHT"),
-    userId: integer("userId").references(()=>usersTable.id).notNull()
+    userId: integer("userId").references(()=>usersTable.id).notNull() 
+})
+
+// User post table
+export const postTable = pgTable("post", {
+    id: serial().primaryKey(),
+    title: varchar("title", {length:255}).notNull(),
+    content: text("content").notNull(),
+    averageRating: real("averageRating").notNull().default(0),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+    updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+    isDeleted: boolean("isDeleted").notNull().default(false),
+    authorId: integer("authorId").notNull().references(()=> usersTable.id)
 })
