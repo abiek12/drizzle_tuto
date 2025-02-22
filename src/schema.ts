@@ -51,7 +51,7 @@ export const categoryTable = pgTable("category", {
 })
 
 // post-category table
-export const postCategoryTable = pgTable("postCategory", {
+export const postCategoryTable = pgTable("post_category", {
     postId: integer("postId").references(()=> postTable.id).notNull(),
     categoryId: integer("categoryId").references(()=> categoryTable.id).notNull(),
 }, table => {
