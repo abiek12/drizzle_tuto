@@ -2,9 +2,9 @@ import { db } from "./drizzle/db";
 import { usersTable } from "./user/schema";
 
 const main = async () => {
+    console.log('Server started');
     await insertUser();
     await fetchUsers();
-    console.log('Server started');
 }
 
 const insertUser = async () => {

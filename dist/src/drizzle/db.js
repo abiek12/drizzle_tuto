@@ -30,5 +30,6 @@ exports.db = void 0;
 const postgres_js_1 = require("drizzle-orm/postgres-js");
 const schema = __importStar(require("../user/schema"));
 const postgres_1 = __importDefault(require("postgres"));
+require("dotenv/config");
 const client = (0, postgres_1.default)(process.env.DATABASE_URL, { max: 1 });
 exports.db = (0, postgres_js_1.drizzle)(client, { schema, logger: true });

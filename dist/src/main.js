@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("./drizzle/db");
 const schema_1 = require("./user/schema");
-require("dotenv/config");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield insertUser();
     yield fetchUsers();
