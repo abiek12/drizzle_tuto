@@ -2,6 +2,7 @@ import { pgTable, uuid, serial, varchar, integer, date, boolean, index, unique }
 import { pgEnum } from "drizzle-orm/pg-core";
 
 export const UserRoles = pgEnum("userRoles", ["ADMIN", "USER"]);
+export const Themes = pgEnum("themes", ["LIGHT", "DARK", "SYSTEM_DEFAULT" ])
 
 export const usersTable = pgTable("users", {
     id: serial().primaryKey(),
@@ -18,4 +19,12 @@ export const usersTable = pgTable("users", {
         emailIndex: index("emailIndex").on(table.email),
         uniqueUserNameAndEmail: unique("uniqueUserNameAndEmail").on(table.userName, table.email)
     }
+})
+
+// User settings table
+export const userSettingsTable = pgTable("user_settings", {
+    id: serial().primaryKey(),
+    emailUpdates: boolean("emailUpdates").notNull().default(true),
+    theme: Themes("themes").notNull().default("LIGHT"),
+    userId: integer("userId").references(()=>usersTable.id).notNull()
 })
