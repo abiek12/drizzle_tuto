@@ -1,4 +1,7 @@
 import { pgTable, uuid, serial, varchar, integer, date, boolean } from "drizzle-orm/pg-core";
+import { pgEnum } from "drizzle-orm/pg-core";
+
+export const UserRoles = pgEnum("userRoles", ["ADMIN", "USER"]);
 
 export const usersTable = pgTable("users", {
     id: serial().primaryKey(),
@@ -6,6 +9,7 @@ export const usersTable = pgTable("users", {
     userName: varchar("userName", {length: 150}).notNull(),
     age: integer("age").notNull().default(0),
     email: varchar("email", {length: 255}).notNull().unique(),
+    role: UserRoles("role").notNull().default("USER"),
     createdAt: date("createdAt").notNull().defaultNow(),
     updatedAt: date("updatedAt").notNull().defaultNow(),
     isDeleted: boolean("isDeleted").notNull().default(false)
