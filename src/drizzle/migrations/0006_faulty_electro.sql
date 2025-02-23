@@ -1,0 +1,1 @@
+ALTER TABLE "post" ADD COLUMN "slug" varchar(255) NOT NULL;
