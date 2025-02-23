@@ -1,3 +1,4 @@
+import { asc, desc, sql } from "drizzle-orm";
 import { db } from "./drizzle/db";
 import { usersTable } from "./schema";
 
@@ -26,7 +27,7 @@ const insertUser = async () => {
         ]
 
         const res = await db.insert(usersTable).values(users).returning();
-        console.log("Insert res:", res);
+        // console.log("Insert res:", res);
     } catch (error) {
         console.error(error);
         throw error;
@@ -35,7 +36,15 @@ const insertUser = async () => {
 
 const fetchUsers = async () => {
     try {
-        const users = await db.query.usersTable.findMany();
+        const users = await db.query.usersTable.findMany({
+            columns: {createdAt: false, isDeleted: false, updatedAt: false},
+            extras: { 
+                lowerCaseName: sql<string>`lower(${usersTable.userName})`.as("lowerCaseName"),
+            },
+            limit: 10,
+            offset: 0,
+            orderBy: [asc(usersTable.userName)]
+        });
         console.log(users);
     } catch (error) {
         console.error(error);
