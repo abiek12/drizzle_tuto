@@ -6,6 +6,8 @@ const main = async () => {
     await deleteUser();
     await insertUser();
     await fetchUsers();
+
+    process.exit();
 }
 
 const insertUser = async () => {
@@ -19,11 +21,12 @@ const insertUser = async () => {
             {
                 userName: "Abhishek",
                 age: 25,
-                email: "=abhishek@mailinator.com",
+                email: "abhishek@mailinator.com",
             },
         ]
-        
-        await db.insert(usersTable).values(users).returning();
+
+        const res = await db.insert(usersTable).values(users).returning();
+        console.log("Insert res:", res);
     } catch (error) {
         console.error(error);
         throw error;
