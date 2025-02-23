@@ -1,4 +1,4 @@
-import { asc, desc, sql } from "drizzle-orm";
+import { asc, sql } from "drizzle-orm";
 import { db } from "./drizzle/db";
 import { usersTable } from "./schema";
 
@@ -37,6 +37,14 @@ const insertUser = async () => {
 const fetchUsers = async () => {
     try {
         const users = await db.query.usersTable.findMany({
+            with: { 
+                posts: {
+                    with: {
+                        postCategory: true,
+                    }
+                }, 
+                userSettings: true 
+            },
             columns: {createdAt: false, isDeleted: false, updatedAt: false},
             extras: { 
                 lowerCaseName: sql<string>`lower(${usersTable.userName})`.as("lowerCaseName"),

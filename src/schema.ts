@@ -1,6 +1,7 @@
 import { pgTable, uuid, serial, varchar, integer, date, boolean, index, unique, text, timestamp, real, primaryKey } from "drizzle-orm/pg-core";
 import { pgEnum } from "drizzle-orm/pg-core";
 import { generateUniqueString } from "./utils/common";
+import { relations } from "drizzle-orm";
 
 export const UserRoles = pgEnum("userRoles", ["ADMIN", "USER"]);
 export const Themes = pgEnum("themes", ["LIGHT", "DARK", "SYSTEM_DEFAULT" ])
@@ -61,5 +62,58 @@ export const postCategoryTable = pgTable("post_category", {
 }, table => {
     return {
         pk: primaryKey({ columns:[table.postId, table.categoryId] })
+    }
+})
+
+
+// RELATIONS
+
+// 1. user to setting and post
+export const userTableRelations = relations(usersTable, ({ one, many}) => {
+    return {
+        userSettings: one(userSettingsTable),
+        posts: many(postTable)
+    }
+})
+
+// 2. user-setting to user
+export const userSettingsRelations = relations(userSettingsTable, ({one}) => {
+    return {
+        user: one(usersTable, {
+            fields: [userSettingsTable.userId],
+            references: [usersTable.id]
+        })
+    }
+})
+
+// 3. post to user and post-category
+export const postRelations = relations(postTable, ({one, many}) => {
+    return {
+        user: one(usersTable, {
+            fields: [postTable.authorId],
+            references: [usersTable.id]
+        }),
+        postCategory: many(postCategoryTable)
+    }
+})
+
+// 4. category to post
+export const categoryRelations = relations(categoryTable, ({one, many}) => {
+    return {
+        postCategory: many(postCategoryTable)
+    }
+})
+
+// 5. post-category to post and category
+export const postCategoryRelations = relations(postCategoryTable, ({one}) => {
+    return {
+        post: one(postTable, {
+            fields: [postCategoryTable.postId],
+            references: [postTable.id]
+        }),
+        catgory: one(categoryTable, {
+            fields: [postCategoryTable.categoryId],
+            references: [categoryTable.id]
+        })
     }
 })
