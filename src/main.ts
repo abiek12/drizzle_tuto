@@ -1,6 +1,6 @@
 import { asc, sql } from "drizzle-orm";
 import { db } from "./drizzle/db";
-import { usersTable } from "./schema";
+import { userSettingsTable, usersTable } from "./schema";
 
 const main = async () => {
     console.log('Server started');
@@ -18,15 +18,11 @@ const insertUser = async () => {
                 userName: "John Doe",
                 age: 30,
                 email: "john@mailinator.com",
-            },
-            {
-                userName: "Abhishek",
-                age: 25,
-                email: "abhishek@mailinator.com",
-            },
+            }
         ]
 
         const res = await db.insert(usersTable).values(users).returning();
+        await insertUserSettings(res[0].id);
         // console.log("Insert res:", res);
     } catch (error) {
         console.error(error);
@@ -63,6 +59,17 @@ const fetchUsers = async () => {
 const deleteUser = async () => {
     try {
         await db.delete(usersTable)
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+const insertUserSettings = async (userId: number) => {
+    try {
+        await db.insert(userSettingsTable).values({
+            userId: userId
+        })
     } catch (error) {
         console.error(error);
         throw error;
