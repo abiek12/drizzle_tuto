@@ -111,7 +111,7 @@ export const postCategoryRelations = relations(postCategoryTable, ({one}) => {
             fields: [postCategoryTable.postId],
             references: [postTable.id]
         }),
-        catgory: one(categoryTable, {
+        category: one(categoryTable, {
             fields: [postCategoryTable.categoryId],
             references: [categoryTable.id]
         })

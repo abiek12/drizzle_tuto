@@ -10,6 +10,7 @@ async function main() {
         migrationsFolder: `${__dirname}/migrations`,
     });
     console.log("Migration completed");
+    process.exit();
 }
 
 main();
